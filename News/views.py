@@ -3,7 +3,7 @@ from django.views.generic import ListView
 
 from django.utils import timezone
 
-from .models import Post
+from .models import Post, Category, Tag
 
 
 class NewsHomePageView(ListView):
@@ -35,4 +35,8 @@ class NewsHomePageView(ListView):
                 status='active', published_date__isnull=False, published_date__gte=week_ago)
             .order_by('-published_date', '-views_count')[:7]
         )
+        
+        context['categories'] = Category.objects.all()[:5]
+        context['tags'] = Tag.objects.all()[:10]
+        
         return context
