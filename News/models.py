@@ -11,10 +11,16 @@ class TimeStamp(models.Model):
 
 class Category(TimeStamp):
     name = models.CharField(max_length=250)
+    
+    def __str__(self):
+        return self.name
 
 
 class Tag(TimeStamp):
     name = models.CharField(max_length=250)
+    
+    def __str__(self):
+        return self.name
 
 
 class Post(TimeStamp):
@@ -38,3 +44,7 @@ class Post(TimeStamp):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     # Since tag has many to many relationship so it doesn't matter where you place it
     tag = models.ManyToManyField(Tag)
+
+    def __str__(self):
+        return self.title
+    
