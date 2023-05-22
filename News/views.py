@@ -6,22 +6,7 @@ from django.utils import timezone
 from .models import Post, Category, Tag
 
 
-class CustomMixins:
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        context['trending_now'] = (
-            Post.objects.filter(status='active', published_date__isnull=False)
-            .order_by('published_date', '-views_count')[:4]
-        )
-
-        context['categories'] = Category.objects.all()[:5]
-        context['tags'] = Tag.objects.all()[:10]
-
-        return context
-
-
-class NewsHomePageView(CustomMixins, ListView):
+class NewsHomePageView(ListView):
     model = Post
     template_name = "AZnews/home.html"
     context_object_name = "posts"
@@ -49,7 +34,6 @@ class NewsHomePageView(CustomMixins, ListView):
 
         context['categories'] = Category.objects.all()[:5]
         context['tags'] = Tag.objects.all()[:10]
-
         return context
 
 
@@ -57,7 +41,7 @@ class AboutPageView(TemplateView):
     template_name = "AZnews/about.html"
 
 
-class PostListView(CustomMixins, ListView):
+class PostListView(ListView):
     model = Post
     template_name = 'AZnews/main/list/list.html'
     queryset = Post.objects.filter(
@@ -68,7 +52,7 @@ class PostListView(CustomMixins, ListView):
     paginate_by = 1
 
 
-class PostByCategoryView(CustomMixins, ListView):
+class PostByCategoryView(ListView):
     model = Post
     template_name = 'AZnews/main/list/list.html'
     context_object_name = 'posts'
@@ -84,7 +68,7 @@ class PostByCategoryView(CustomMixins, ListView):
         return query
 
 
-class PostByTagView(CustomMixins, ListView):
+class PostByTagView(ListView):
     model = Post
     template_name = 'AZnews/main/list/list.html'
     context_object_name = 'posts'
