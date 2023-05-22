@@ -1,5 +1,5 @@
 from datetime import timedelta
-from django.views.generic import ListView
+from django.views.generic import ListView, TemplateView
 
 from django.utils import timezone
 
@@ -53,6 +53,10 @@ class NewsHomePageView(CustomMixins, ListView):
         return context
 
 
+class AboutPageView(TemplateView):
+    template_name = "AZnews/about.html"
+
+
 class PostListView(CustomMixins, ListView):
     model = Post
     template_name = 'AZnews/main/list/list.html'
@@ -61,12 +65,14 @@ class PostListView(CustomMixins, ListView):
         published_date__isnull=False,
     )
     context_object_name = 'posts'
+    paginate_by = 1
 
 
 class PostByCategoryView(CustomMixins, ListView):
     model = Post
     template_name = 'AZnews/main/list/list.html'
     context_object_name = 'posts'
+    paginate_by = 1
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -82,6 +88,7 @@ class PostByTagView(CustomMixins, ListView):
     model = Post
     template_name = 'AZnews/main/list/list.html'
     context_object_name = 'posts'
+    paginate_by = 1
 
     def get_queryset(self):
         queryset = super().get_queryset()
