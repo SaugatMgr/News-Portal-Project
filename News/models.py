@@ -58,3 +58,9 @@ class Contact(TimeStamp):
 
     def __str__(self):
         return self.name
+
+class NewsLetter(TimeStamp):
+    email = models.EmailField()
+    
+    def __str__(self):
+        return self.email
