@@ -1,11 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from datetime import timedelta
 from django.views.generic import View, ListView, TemplateView
 
 from django.utils import timezone
 
 from .models import Post, Category, Tag
-
+from .forms import ContactForm
+from django.contrib import messages
 
 class NewsHomePageView(ListView):
     model = Post
@@ -90,3 +91,18 @@ class ContactPageView(View):
 
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name)
+
+    def post(self, request, *args, **kwargs):
+        form = ContactForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, "Your form has been submitted successfully.We will contact you soon."
+            )
+            return redirect("contact")
+        else:
+            messages.error(
+                request, "Cannot submit your query.Please make sure your form is valid."
+            )
+            return render(request, self.template_name, {"form": form})
