@@ -1,5 +1,6 @@
+from django.shortcuts import render
 from datetime import timedelta
-from django.views.generic import ListView, TemplateView
+from django.views.generic import View, ListView, TemplateView
 
 from django.utils import timezone
 
@@ -82,3 +83,10 @@ class PostByTagView(ListView):
             tag=self.kwargs["tag_id"],
         )
         return query
+
+
+class ContactPageView(View):
+    template_name = "AZnews/contact.html"
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
