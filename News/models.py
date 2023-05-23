@@ -7,18 +7,19 @@ class TimeStamp(models.Model):
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:
-        abstract = True # Django won't make table after we have written this
+        abstract = True  # Django won't make table after we have written this
+
 
 class Category(TimeStamp):
     name = models.CharField(max_length=250)
-    
+
     def __str__(self):
         return self.name
 
 
 class Tag(TimeStamp):
     name = models.CharField(max_length=250)
-    
+
     def __str__(self):
         return self.name
 
@@ -47,4 +48,13 @@ class Post(TimeStamp):
 
     def __str__(self):
         return self.title
-    
+
+
+class Contact(TimeStamp):
+    message = models.TextField()
+    name = models.CharField(max_length=64)
+    email = models.EmailField()
+    subject = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
