@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from datetime import timedelta
-from django.views.generic import View, ListView, TemplateView
+from django.views.generic import View, ListView, DetailView, TemplateView
 
 from django.utils import timezone
 
@@ -84,6 +84,20 @@ class PostByTagView(ListView):
             status='active',
             published_date__isnull=False,
             tag=self.kwargs["tag_id"],
+        )
+        return query
+
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = "AZnews/main/detail/detail.html"
+    context_object_name = "post"
+
+    def get_queryset(self):
+        query = super().get_queryset()
+        query = query.filter(
+            status="active",
+            published_date__isnull=False,
         )
         return query
 
