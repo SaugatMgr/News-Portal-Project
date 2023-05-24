@@ -90,5 +90,29 @@
     <!-- Jquery Plugins, main Jquery -->
     <script src="{% static 'AZnews/assets/js/plugins.js' %}"></script>
     <script src="{% static 'AZnews/assets/js/main.js' %}"></script>
+
+    <!-- Our JS code -->
+    <script>
+      $("#newsletter_side_form").submit(function(e){
+        e.preventDefault()
+        // hamilai chaine format maah convert gareko
+        let serializedData = $(this).serialize();
+
+        $.ajax({
+          type: "POST",
+          url: "{% url 'newsletter' %}",
+          data: serializedData,
+
+          success: function(response){
+            console.log(response)
+          },
+
+          error: function(response){
+            console.log(response)
+          },
+        })
+      })
+    </script>
+
   </body>
 </html>
