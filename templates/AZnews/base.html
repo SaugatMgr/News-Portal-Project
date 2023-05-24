@@ -8,27 +8,31 @@
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="manifest" href="site.webmanifest" />
-    <link
-      rel="shortcut icon"
-      type="image/x-icon"
-      href="{% static 'AZnews/assets/img/favicon.ico' %}"
-    />
-
+    <link rel="shortcut icon"
+          type="image/x-icon"
+          href="{% static 'AZnews/assets/img/favicon.ico' %}" />
     <!-- CSS here -->
-    <link rel="stylesheet" href="{% static 'AZnews/assets/css/bootstrap.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'AZnews/assets/css/owl.carousel.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'AZnews/assets/css/ticker-style.css' %}" />
+    <link rel="stylesheet"
+          href="{% static 'AZnews/assets/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet"
+          href="{% static 'AZnews/assets/css/owl.carousel.min.css' %}" />
+    <link rel="stylesheet"
+          href="{% static 'AZnews/assets/css/ticker-style.css' %}" />
     <link rel="stylesheet" href="{% static 'AZnews/assets/css/flaticon.css' %}" />
     <link rel="stylesheet" href="{% static 'AZnews/assets/css/slicknav.css' %}" />
-    <link rel="stylesheet" href="{% static 'AZnews/assets/css/animate.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'AZnews/assets/css/magnific-popup.css' %}" />
-    <link rel="stylesheet" href="{% static 'AZnews/assets/css/fontawesome-all.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'AZnews/assets/css/themify-icons.css' %}" />
+    <link rel="stylesheet"
+          href="{% static 'AZnews/assets/css/animate.min.css' %}" />
+    <link rel="stylesheet"
+          href="{% static 'AZnews/assets/css/magnific-popup.css' %}" />
+    <link rel="stylesheet"
+          href="{% static 'AZnews/assets/css/fontawesome-all.min.css' %}" />
+    <link rel="stylesheet"
+          href="{% static 'AZnews/assets/css/themify-icons.css' %}" />
     <link rel="stylesheet" href="{% static 'AZnews/assets/css/slick.css' %}" />
-    <link rel="stylesheet" href="{% static 'AZnews/assets/css/nice-select.css' %}" />
+    <link rel="stylesheet"
+          href="{% static 'AZnews/assets/css/nice-select.css' %}" />
     <link rel="stylesheet" href="{% static 'AZnews/assets/css/style.css' %}" />
   </head>
-
   <body>
     <!-- Preloader Start -->
     <!-- <div id="preloader-active">
@@ -42,16 +46,10 @@
         </div>
     </div> -->
     <!-- Preloader Start -->
-
     {% include 'AZnews/header/header.html' %}
-    
-    {% block content %}
-    {% endblock %}
-
+    {% block content %}{% endblock %}
     {% include 'AZnews/footer/footer.html' %}
-
     <!-- JS here -->
-
     <!-- All JS Custom Plugins Link Here here -->
     <script src="{% static 'AZnews/assets/js/vendor/modernizr-3.5.0.min.js' %}"></script>
     <!-- Jquery, Popper, Bootstrap -->
@@ -60,7 +58,6 @@
     <script src="{% static 'AZnews/assets/js/bootstrap.min.js' %}"></script>
     <!-- Jquery Mobile Menu -->
     <script src="{% static 'AZnews/assets/js/jquery.slicknav.min.js' %}"></script>
-
     <!-- Jquery Slick , Owl-Carousel Plugins -->
     <script src="{% static 'AZnews/assets/js/owl.carousel.min.js' %}"></script>
     <script src="{% static 'AZnews/assets/js/slick.min.js' %}"></script>
@@ -70,27 +67,22 @@
     <script src="{% static 'AZnews/assets/js/wow.min.js' %}"></script>
     <script src="{% static 'AZnews/assets/js/animated.headline.js' %}"></script>
     <script src="{% static 'AZnews/assets/js/jquery.magnific-popup.js' %}"></script>
-
     <!-- Breaking New Pluging -->
     <script src="{% static 'AZnews/assets/js/jquery.ticker.js' %}"></script>
     <script src="{% static 'AZnews/assets/js/site.js' %}"></script>
-
     <!-- Scrollup, nice-select, sticky -->
     <script src="{% static 'AZnews/assets/js/jquery.scrollUp.min.js' %}"></script>
     <script src="{% static 'AZnews/assets/js/jquery.nice-select.min.js' %}"></script>
     <script src="{% static 'AZnews/assets/js/jquery.sticky.js' %}"></script>
-
     <!-- contact js -->
     <script src="{% static 'AZnews/assets/js/contact.js' %}"></script>
     <script src="{% static 'AZnews/assets/js/jquery.form.js' %}"></script>
     <script src="{% static 'AZnews/assets/js/jquery.validate.min.js' %}"></script>
     <script src="{% static 'AZnews/assets/js/mail-script.js' %}"></script>
     <script src="{% static 'AZnews/assets/js/jquery.ajaxchimp.min.js' %}"></script>
-
     <!-- Jquery Plugins, main Jquery -->
     <script src="{% static 'AZnews/assets/js/plugins.js' %}"></script>
     <script src="{% static 'AZnews/assets/js/main.js' %}"></script>
-
     <!-- Our JS code -->
     <script>
       $("#newsletter_side_form").submit(function(e){
@@ -104,15 +96,38 @@
           data: serializedData,
 
           success: function(response){
-            console.log(response)
+            $("#newsletter_side_form_message").append(
+              `
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+                ${response.message}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              `
+            )
+            setTimeout(function(){
+              $('.alert').alert('close')
+            }, 2000)
           },
 
           error: function(response){
-            console.log(response)
+            $("#newsletter_side_form_message").append(
+              `
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                ${response.responseJSON.message}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              `
+            )
+            setTimeout(function(){
+              $('.alert').alert('close')
+            }, 2000)
           },
         })
       })
     </script>
-
   </body>
 </html>
