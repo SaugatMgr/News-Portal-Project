@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from datetime import timedelta
 from django.views.generic import View, ListView, TemplateView
@@ -5,8 +6,9 @@ from django.views.generic import View, ListView, TemplateView
 from django.utils import timezone
 
 from .models import Post, Category, Tag
-from .forms import ContactForm
+from .forms import ContactForm, NewsLetterForm
 from django.contrib import messages
+
 
 class NewsHomePageView(ListView):
     model = Post
@@ -106,3 +108,36 @@ class ContactPageView(View):
                 request, "Cannot submit your query.Please make sure your form is valid."
             )
             return render(request, self.template_name, {"form": form})
+
+
+class NewsLetterView(View):
+    def post(self, request, *args, **kwargs):
+        is_ajax = request.headers.get("x-requested-with")
+
+        if is_ajax == "XMLHttpRequest":
+            form = NewsLetterForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return JsonResponse(
+                    {
+                        'success': True,
+                        'message': 'Successfully Subscribed to our News Letter.',
+                    },
+                    status=201,
+                )
+
+            else:
+                return JsonResponse(
+                    {
+                        'success': False,
+                        'message': 'Form is invalid.',
+                    },
+                    status=400,
+                )
+        return JsonResponse(
+            {
+                'success': False,
+                'message': 'Cannot process.Must be and AJAX XMLHttpRequest.',
+            },
+            status=400,
+        )
