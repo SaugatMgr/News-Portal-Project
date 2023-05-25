@@ -6,7 +6,7 @@ from django.views.generic import View, ListView, DetailView, TemplateView
 from django.utils import timezone
 
 from .models import Post, Category, Tag
-from .forms import ContactForm, NewsLetterForm
+from .forms import ContactForm, NewsLetterForm, CommentForm
 from django.contrib import messages
 
 
@@ -101,6 +101,26 @@ class PostDetailView(DetailView):
         )
         return query
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+
+        current_obj = self.get_object()
+        current_obj.views_count += 1
+        current_obj.save()
+        
+        context['previous_post'] = (Post.objects.filter(
+            status="active",
+            published_date__isnull=False,
+            id__lt=current_obj.id).order_by('-id').first()
+        )
+        
+        context['next_post'] = (Post.objects.filter(
+            status="active",
+            published_date__isnull=False,
+            id__gt=current_obj.id
+        ).order_by('id').first())
+
+        return context
 
 class ContactPageView(View):
     template_name = "AZnews/contact.html"
@@ -155,3 +175,21 @@ class NewsLetterView(View):
             },
             status=400,
         )
+
+class CommentView(View):
+    def post(self, request, *args, **kwargs):
+        form = CommentForm(request.POST)
+        post_id = request.POST['post']
+        
+        if form.is_valid():
+            form.save()
+            return redirect('post-detail', post_id)
+        else:
+            post = Post.objects.get(pk=post_id)
+            return render(
+                request,
+                "AZnews/main/detail/detail.html",
+                {"post": post,
+                 "form": form},
+            )
+    
