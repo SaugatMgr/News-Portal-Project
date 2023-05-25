@@ -9,6 +9,7 @@ from .views import (
     PostByCategoryView,
     PostByTagView,
     NewsLetterView,
+    CommentView,
 )
 
 urlpatterns = [
@@ -22,4 +23,5 @@ urlpatterns = [
     path('post-by-tag/<int:tag_id>/',
          PostByTagView.as_view(), name="post-by-tag"),
     path('newsletter/', NewsLetterView.as_view(), name="newsletter"),
+    path('comment/', CommentView.as_view(), name="comment"),
 ]
