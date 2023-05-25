@@ -64,3 +64,16 @@ class NewsLetter(TimeStamp):
     
     def __str__(self):
         return self.email
+    
+class Comment(TimeStamp):
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+    )
+    name=models.CharField(max_length=64)
+    message=models.TextField()
+    email=models.EmailField()
+    
+    def __str__(self):
+        return self.name
+    
