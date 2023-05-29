@@ -1,0 +1,26 @@
+{% extends 'blog/base.html' %}{% load crispy_forms_tags %}
+{% block title %}Unpublished Post Detail{% endblock %}
+
+{% block content %}
+    <div class="card" style="word-wrap: break-word;">
+        <div class="card-header">
+            <h4>{{ unpublished_post.title }}</h4>
+        </div>
+        <div class="card-body text-center">
+            <p>
+                Written By {{ unpublished_post.author }} | {{ unpublished_post.created_date }}
+            </p>
+            <a href="{% url 'news-admin:publish_post' object.pk %}" class="btn btn-success">
+                Publish
+            </a>
+            <a href="{% url 'news-admin:post_update' object.pk %}" class="btn btn-info">
+                Update
+            </a>
+            <a href="{% url 'news-admin:unpublished_post_delete' object.pk %}" class="btn btn-danger">
+                Delete
+            </a><br>
+            <p style="margin-top: 5px;text-align:left;">{{ unpublished_post.content }}</p>
+        </div>
+    </div>
+    <p>Back To <a href="{% url 'news-admin:unpublished_posts' %}">All Posts</a></p>
+{% endblock %}

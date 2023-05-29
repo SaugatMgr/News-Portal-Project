@@ -1,0 +1,71 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Blog{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'blog/css/bootstrap.min.css' %}" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'blog/css/blogapp.css' %}">
+</head>
+<body>
+    <div class="container-md bg-dark" style="border-radius:15px;">
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <div class="container">
+                    <a class="navbar-brand" href="#">
+                        <img src="{% static 'blog/img/blog.png' %}" alt="" width="36px">
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    {% if user.is_authenticated %}
+                    <div class="collapse navbar-collapse" id="navmenu">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item-text">
+                                <a class="nav-link active" aria-current="page" href="{% url 'news-admin:home' %}">Home</a>
+                            </li>
+                            <li class="nav-item-text">
+                                <a class="nav-link active" aria-current="page" href="{% url 'news-admin:unpublished_posts' %}">Unpublished</a>
+                            <li class="nav-item-text">
+                                <a href="{% url 'news-admin:create_post' %}">
+                                    <button class="btn btn-primary">+ Create</button>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'logout' %}">
+                                    <img src="{% static 'blog/img/logout.png' %}" alt="" width="36px">
+                                </a>
+                            </li>
+                        </ul>
+                        {% else %}
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'login' %}">
+                                    <img src="{% static 'blog/img/login.png' %}" alt="" width="36px">
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'accounts:signup' %}">
+                                    <img src="{% static 'blog/img/add-user.png' %}" alt="" width="36px">
+                                </a>
+                            </li>
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </nav>
+        </header>
+    </div>
+    <div class="container-md mt-3">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <link rel="stylesheet" href="{% static 'blog/js/bootstrap.bundle.min.js' %}" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous">
+</body>
+</html>

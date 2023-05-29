@@ -1,0 +1,22 @@
+{% extends 'blog/base.html' %}{% load crispy_forms_tags %}
+{% block title %}Post Detail{% endblock %}
+
+{% block content %}
+    <div class="card" style="word-wrap: break-word;">
+        <div class="card-header">
+            <h4>{{ post.title }}</h4>
+        </div>
+        <div class="card-body text-center">
+            <p>
+                Written By {{ post.author }} | {{ post.created_date }}
+            </p>
+            <a href="{% url 'news-admin:post_update' object.pk %}" class="btn btn-info">
+                Update
+            </a>
+            <a href="{% url 'news-admin:post_delete' object.pk %}" class="btn btn-danger">
+                Delete
+            </a><br>
+            <p style="margin-top: 5px;text-align:left;">{{ post.content }}</p>
+        </div>
+    </div>
+{% endblock %}

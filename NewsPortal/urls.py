@@ -20,8 +20,14 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
+    # Admin
     path('admin/', admin.site.urls),
+    # User Management
+    path('accounts/', include('django.contrib.auth.urls')),
+    # Local
+    path('accounts/', include('accounts.urls')),
     path('', include('News.urls')),
+    path('news-admin/', include('blogapp.urls')),
 ]
 
 if settings.DEBUG:
