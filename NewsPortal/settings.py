@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # Third Party
     'crispy_forms',
     'crispy_bootstrap5',
+    'django_summernote',
 ]
 
 MIDDLEWARE = [
@@ -141,3 +142,11 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 LOGIN_REDIRECT_URL = "/news-admin"
 LOGOUT_REDIRECT_URL = "/news-admin"
+
+SUMMERNOTE_CONFIG = {
+    'summernote': {
+        # Change editor size
+        'width': '100%',
+        'height': '480',
+    }
+}
