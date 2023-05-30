@@ -18,6 +18,6 @@
             <a href="#"><i class="fa fa-eye"></i>{{ post.views_count }} views</a>
          </li>
       </ul>
-      {{ post.content|linebreaksbr }}
+      {{ post.content|safe }}
    </div>
 </div>
