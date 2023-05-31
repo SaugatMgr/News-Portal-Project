@@ -128,6 +128,63 @@
           },
         })
       })
+    
+      $("#newsletter_bottom_form").submit(function(e){
+        e.preventDefault()
+        // hamilai chaine format maah convert gareko
+        let serializedData = $(this).serialize();
+
+        $.ajax({
+          type: "POST",
+          url: "{% url 'newsletter' %}",
+          data: serializedData,
+
+          success: function(response){
+            $("#newsletter_bottom_message").append(
+              `
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+                ${response.message}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              `
+            )
+            setTimeout(function(){
+              $('.alert').alert('close')
+            }, 2000)
+          },
+
+          error: function(response){
+            $("#newsletter_bottom_message").append(
+              `
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                ${response.responseJSON.message}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              `
+            )
+            setTimeout(function(){
+              $('.alert').alert('close')
+            }, 2000)
+          },
+        })
+      })
+    
+      $(".pagination_number").click(function(e){
+        // do not perform default action
+        e.preventDefault();
+        // window.location.href gives http://localhost:8000/post-search/
+        let current_url = window.location.href.split('?')[0]
+        let params = new URL(document.location).searchParams;
+        let query = params.get("query"); // j search word ho tei
+        let href = $(this).attr("href"); //?page=pagination_number
+        // http://localhost:8000/post-search/?page=2&query=j search word ho tei
+        let new_url = `${current_url}${href}&query=${query}`;
+        window.location.replace(new_url);
+      });
     </script>
   </body>
 </html>
