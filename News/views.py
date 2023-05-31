@@ -1,3 +1,5 @@
+from django.db.models import Q
+from django.core.paginator import Paginator, PageNotAnInteger
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from datetime import timedelta
@@ -107,13 +109,13 @@ class PostDetailView(DetailView):
         current_obj = self.get_object()
         current_obj.views_count += 1
         current_obj.save()
-        
+
         context['previous_post'] = (Post.objects.filter(
             status="active",
             published_date__isnull=False,
             id__lt=current_obj.id).order_by('-id').first()
         )
-        
+
         context['next_post'] = (Post.objects.filter(
             status="active",
             published_date__isnull=False,
@@ -121,6 +123,7 @@ class PostDetailView(DetailView):
         ).order_by('id').first())
 
         return context
+
 
 class ContactPageView(View):
     template_name = "AZnews/contact.html"
@@ -176,11 +179,12 @@ class NewsLetterView(View):
             status=400,
         )
 
+
 class CommentView(View):
     def post(self, request, *args, **kwargs):
         form = CommentForm(request.POST)
         post_id = request.POST['post']
-        
+
         if form.is_valid():
             form.save()
             return redirect('post-detail', post_id)
@@ -192,4 +196,34 @@ class CommentView(View):
                 {"post": post,
                  "form": form},
             )
-    
+
+
+class PostSearchView(View):
+    template_name = "AZnews/main/list/post_search.html"
+
+    def get(self, request, *args, **kwargs):
+        query = request.GET["query"]
+        post_list = Post.objects.filter(
+            (Q(title__icontains=query)) | (Q(content__icontains=query))
+            & Q(status="active") & Q(published_date__isnull=False)
+        ).order_by("-published_date")
+
+        # pagination start
+        page = request.GET.get("page", 1)
+        paginate_by = 1
+        paginator = Paginator(post_list, paginate_by)
+
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+
+        # pagination end
+        return render(
+            request,
+            self.template_name,
+            {
+                "page_obj": posts,
+                "query": query,
+            }
+        )
