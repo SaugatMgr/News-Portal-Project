@@ -23,6 +23,7 @@ urlpatterns = [
     # Admin
     path('admin/', admin.site.urls),
     path('summernote/', include('django_summernote.urls')),
+    path('api/v1/', include('api.urls')),
     # User Management
     path('accounts/', include('django.contrib.auth.urls')),
     # Local

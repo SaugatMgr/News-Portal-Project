@@ -42,10 +42,12 @@ INSTALLED_APPS = [
     'News',
     'blogapp',
     'accounts',
+    'api',
     # Third Party
     'crispy_forms',
     'crispy_bootstrap5',
     'django_summernote',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
