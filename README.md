@@ -32,14 +32,19 @@ To get started with the project, follow these steps:
 
 To start using the News Portal:
 
-1. **Create a superuser:**
+1. **Migrate changes**
+   - Run the following command to migrate changes to database:
+      ```bash
+      python manage.py migrate
+      ```
+2. **Create a superuser:**
     - Run the following command and follow the prompts:
         ```bash
         python manage.py createsuperuser
         ```
     - Alternatively, you can sign up and log in from the home page.
 
-2. **Run the server:**
+3. **Run the server:**
     ```bash
     python manage.py runserver
     ```
